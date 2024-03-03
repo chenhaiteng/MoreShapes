@@ -14,7 +14,7 @@ public struct Spark: Shape {
     let vertices: Int
     
     public func path(in rect: CGRect) -> Path {
-        let drawingRect = rect.inset(by: insets.uiEdgeInsets).fitSqure()
+        let drawingRect = rect.inset(by: insets.uiEdgeInsets).fitSquare()
         let r = drawingRect.width/2.0
         let incrementAngle = CGAngle.degrees( 360.0/Double(vertices))
         let start = CGPolarPoint(radius: r, angle: .zero).cgpoint
