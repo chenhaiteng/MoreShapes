@@ -14,10 +14,10 @@ public struct WaveCircle: Shape {
     private let amplitudes: [Double]
     private let amplitude: Double
     private let waves: Int
-    private let insets: UIEdgeInsets
+    private let insets: EdgeInsets
     
     public func path(in rect: CGRect) -> Path {
-        let drawingRect = rect.inset(by: insets).fitSquare()
+        let drawingRect = rect.inset(by: insets.uiEdgeInsets).fitSquare()
         return Path { p in
             let baseDegree = waves%2 == 0 ? CGAngle.degrees(360.0/Double(waves)/4.0) : CGAngle.degrees(360.0/Double(waves)/2.0)
             let r = drawingRect.width/2.0 - amplitude
@@ -35,7 +35,12 @@ public struct WaveCircle: Shape {
         }
     }
     
-    public init<T: BinaryFloatingPoint>(_ amplitude: T = Double(2.0), waves: Int = 8, insets: UIEdgeInsets = .zero) {
+    @available(*, deprecated, renamed: "init(_:waves:insets:)")
+    public init<T: BinaryFloatingPoint>(_ amplitude: T, waves: Int, uiInsets: UIEdgeInsets) {
+        self.init(amplitude, waves: waves, insets: uiInsets.edgeInsets)
+    }
+    
+    public init<T: BinaryFloatingPoint>(_ amplitude: T = Double(2.0), waves: Int = 12, insets: EdgeInsets = .init()) {
         self.insets = insets
         guard amplitude > 0, waves > 0 else {
             amplitudes = []
@@ -65,10 +70,16 @@ extension WaveCircle: InsettableShape {
 }
 
 #Preview {
-    WaveCircle(6.0, waves: 12, insets: UIEdgeInsets(top: 20.0, left: 10.0, bottom: 30.0, right: 40.0)).inset(by: 30.0).stroke(AngularGradient({
-        Color.red
-        Color.yellow
-        Color.blue
-        Color.red
-    }), lineWidth: 5.0)
+    VStack {
+        WaveCircle()
+        ZStack {
+            WaveCircle(6.0)
+            WaveCircle(6.0).inset(by: 30.0).stroke(AngularGradient({
+                Color.red
+                Color.yellow
+                Color.blue
+                Color.red
+            }), lineWidth: 5.0)
+        }
+    }
 }

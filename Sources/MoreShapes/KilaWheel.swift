@@ -28,11 +28,11 @@ public struct KilaWheel: Shape {
     let kilaWidth: Double
     let kilaCount: Int
     let kilaOffset: Double
-    let insets: UIEdgeInsets
+    let insets: EdgeInsets
     
     public func path(in rect: CGRect) -> Path {
         guard !rect.isEmpty else { return Path() }
-        let drawingRect = rect.inset(by: insets).fitSquare()
+        let drawingRect = rect.inset(by: insets.uiEdgeInsets).fitSquare()
         let size = drawingRect.width
         let angleStep = Double.pi*2.0/Double(kilaCount)
         var path = Path()
@@ -68,7 +68,12 @@ public struct KilaWheel: Shape {
         return path
     }
     
-    public init(kilaHeight: Double = 0.15, kilaWidth: Double = 0.9, kilaCount: Int = 10, kilaOffset:Double = -5.0, insets: UIEdgeInsets = .zero) {
+    @available(*, deprecated, renamed: "init(kilaHeight:kilaWidth:kilaCount:kilaOffset:insets:)")
+    public init(kilaHeight: Double, kilaWidth: Double, kilaCount: Int, kilaOffset:Double, uiInsets: UIEdgeInsets) {
+        self.init(kilaHeight: kilaHeight, kilaWidth: kilaWidth, kilaCount: kilaCount, kilaOffset: kilaOffset, insets: uiInsets.edgeInsets)
+    }
+    
+    public init(kilaHeight: Double = 0.15, kilaWidth: Double = 0.9, kilaCount: Int = 10, kilaOffset:Double = -5.0, insets: EdgeInsets = .init()) {
         self.kilaHeight = kilaHeight
         self.kilaWidth = kilaWidth
         self.kilaCount = kilaCount
@@ -84,8 +89,11 @@ extension KilaWheel : InsettableShape {
 }
 
 #Preview {
-    KilaWheel(insets:UIEdgeInsets(top: 20.0, left: 20.0, bottom: 0.0, right: 0.0)).fill(RadialGradient(center: .center, startRadius: 0.0, endRadius: 300.0) {
-        Color.white
-        Color.blue
-    }, strokeBorder: .black, lineWidth: 3.0)
+    VStack {
+        KilaWheel()
+        KilaWheel(insets:.init(top: 0.0, leading: 20.0, bottom: 0.0, trailing: 40.0)).fill(RadialGradient(center: .center, startRadius: 0.0, endRadius: 300.0) {
+            Color.white
+            Color.blue
+        }, strokeBorder: .gray, lineWidth: 5.0)
+    }
 }

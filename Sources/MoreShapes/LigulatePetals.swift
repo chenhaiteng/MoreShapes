@@ -10,7 +10,7 @@ import CoreGraphicsExtension
 
 public struct LigulatePetals: Shape {
     let petalCount: Int
-    let insets: UIEdgeInsets
+    let insets: EdgeInsets
     let diskRatio: Double
     let petalRatio: Double
     let fixedPetalWidth: Double?
@@ -27,7 +27,7 @@ public struct LigulatePetals: Shape {
     }
     
     public func path(in rect: CGRect) -> Path {
-        let drawingRect = rect.inset(by: insets).fitSquare()
+        let drawingRect = rect.inset(by: insets.uiEdgeInsets).fitSquare()
         let offsetT = CGAffineTransform(translationX: drawingRect.midX, y: drawingRect.midY)
         let petalLength = drawingRect.height * (1.0 - diskRatio)/2.0
         let diskRadius = diskRatio*drawingRect.height/2.0
@@ -39,7 +39,12 @@ public struct LigulatePetals: Shape {
         }
     }
     
-    public init(petalCount: Int = 8, petalRatio: Double = 0.0, diskRatio: Double = 0.2, insets: UIEdgeInsets = .zero, fixedPetalWidth:Double = 0.0) {
+    @available(*, deprecated, renamed: "init(petalCount:petalRatio:diskRatio:insets:fixedPetalWidth:)")
+    public init(petalCount: Int, petalRatio: Double, diskRatio: Double, uiInsets: UIEdgeInsets, fixedPetalWidth:Double) {
+        self.init(petalCount: petalCount, petalRatio: petalRatio, diskRatio: diskRatio, insets: uiInsets.edgeInsets, fixedPetalWidth: fixedPetalWidth)
+    }
+    
+    public init(petalCount: Int = 8, petalRatio: Double = 0.0, diskRatio: Double = 0.2, insets: EdgeInsets = .init(), fixedPetalWidth:Double = 0.0) {
         self.petalCount = petalCount
         self.insets = insets
         self.petalRatio = petalRatio
@@ -56,6 +61,14 @@ extension LigulatePetals: InsettableShape {
 
 #Preview {
     VStack {
-        LigulatePetals().frame(width: 160.0, height: 160.0).border(Color.red)
+        LigulatePetals()
+        ZStack {
+            LigulatePetals().stroke(Color.gray, lineWidth: 5.0)
+            LigulatePetals().inset(by:50.0).stroke(AngularGradient {
+                Color.red
+                Color.blue
+                Color.yellow
+            }, lineWidth: 8.0).rotationEffect(Angle(degrees: 22.5))
+        }
     }
 }

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreGraphicsExtension
+import GradientBuilder
 
 public struct Spark: Shape {
     let insets: EdgeInsets
@@ -32,10 +33,8 @@ public struct Spark: Shape {
     }
     
     @available(*, deprecated, renamed: "init(vertices:depth:insets:)")
-    public init(vertices: Int, depth: Double, uiInsets: UIEdgeInsets = .zero) {
-        self.vertices = vertices
-        self.depth = depth
-        self.insets = uiInsets.edgeInsets
+    public init(vertices: Int, depth: Double, uiInsets: UIEdgeInsets) {
+        self.init(vertices: vertices, depth: depth, insets: uiInsets.edgeInsets)
     }
     
     public init(vertices: Int = 10, depth: Double = 0.8, insets: EdgeInsets = .init()) {
@@ -52,7 +51,15 @@ extension Spark : InsettableShape {
 }
 
 #Preview {
-    GeometryReader { geo in
+    VStack {
         Spark()
+        ZStack {
+            Spark(vertices: 20).inset(by: 30.0).stroke()
+            Spark(vertices: 20).inset(by: 60.0).fill(RadialGradient {
+                Color.white
+                Color.yellow
+                Color.red
+            })
+        }
     }
 }
