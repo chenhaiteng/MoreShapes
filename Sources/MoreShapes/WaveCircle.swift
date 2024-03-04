@@ -10,13 +10,13 @@ import Accelerate
 import CoreGraphicsExtension
 import GradientBuilder
 
-struct WaveCircle: Shape {
+public struct WaveCircle: Shape {
     private let amplitudes: [Double]
     private let amplitude: Double
     private let waves: Int
     private let insets: UIEdgeInsets
     
-    func path(in rect: CGRect) -> Path {
+    public func path(in rect: CGRect) -> Path {
         let drawingRect = rect.inset(by: insets).fitSquare()
         return Path { p in
             let baseDegree = waves%2 == 0 ? CGAngle.degrees(360.0/Double(waves)/4.0) : CGAngle.degrees(360.0/Double(waves)/2.0)
@@ -35,7 +35,7 @@ struct WaveCircle: Shape {
         }
     }
     
-    init<T: BinaryFloatingPoint>(_ amplitude: T = Double(2.0), waves: Int = 8, insets: UIEdgeInsets = .zero) {
+    public init<T: BinaryFloatingPoint>(_ amplitude: T = Double(2.0), waves: Int = 8, insets: UIEdgeInsets = .zero) {
         self.insets = insets
         guard amplitude > 0, waves > 0 else {
             amplitudes = []
@@ -59,7 +59,7 @@ struct WaveCircle: Shape {
 }
 
 extension WaveCircle: InsettableShape {
-    func inset(by amount: CGFloat) -> WaveCircle {
+    public func inset(by amount: CGFloat) -> WaveCircle {
         return WaveCircle(self.amplitude, waves: self.waves, insets: insets.inset(by: amount))
     }
 }

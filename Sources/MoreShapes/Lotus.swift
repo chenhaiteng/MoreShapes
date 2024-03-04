@@ -8,7 +8,7 @@
 import SwiftUI
 import CoreGraphicsExtension
 
-struct Lotus: Shape {
+public struct Lotus: Shape {
     var radius: CGFloat
     var petalDepth: CGFloat
     var petalCount: Int
@@ -18,13 +18,13 @@ struct Lotus: Shape {
         Path { p in
             let innerRadius = radius - petalDepth
             let startPt = CGPolarPoint(radius: innerRadius, angle: .degrees(-90.0 - 360.0/Double(petalCount*2))).cgpoint
-            var endPt = CGPolarPoint(radius: innerRadius, angle: .degrees(-90.0 + 360.0/Double(petalCount*2))).cgpoint
-            var top = CGPolarPoint(radius: radius, angle: .degrees(-90.0)).cgpoint
+            let endPt = CGPolarPoint(radius: innerRadius, angle: .degrees(-90.0 + 360.0/Double(petalCount*2))).cgpoint
+            let top = CGPolarPoint(radius: radius, angle: .degrees(-90.0)).cgpoint
             let ratioX = 0.9
             let ratioY = 0.8
-            var controlPt1 = CGPoint(x: startPt.x - (top.x - startPt.x)*ratioX, y: startPt.y - (startPt.y - top.y)*ratioY)
-            var controlPt2 = CGPoint(x: top.x, y: top.y + (startPt.y - top.y)*0.3)
-            var controlPt3 = CGPoint(x: endPt.x + (endPt.x - top.x)*ratioX, y: endPt.y - (endPt.y - top.y)*ratioY)
+            let controlPt1 = CGPoint(x: startPt.x - (top.x - startPt.x)*ratioX, y: startPt.y - (startPt.y - top.y)*ratioY)
+            let controlPt2 = CGPoint(x: top.x, y: top.y + (startPt.y - top.y)*0.3)
+            let controlPt3 = CGPoint(x: endPt.x + (endPt.x - top.x)*ratioX, y: endPt.y - (endPt.y - top.y)*ratioY)
             p.addCurve(to: top, control1: controlPt1, control2: controlPt2)
             p.addCurve(to: endPt, control1: controlPt2, control2: controlPt3)
         }
@@ -43,16 +43,15 @@ struct Lotus: Shape {
         return path
     }
     
-    func path(in rect: CGRect) -> Path {
+    public func path(in rect: CGRect) -> Path {
         guard !rect.isEmpty else { return Path() }
         guard radius > petalDepth else { return Path() }
         guard radius < rect.width, radius < rect.height else  {return Path()}
         
-        var path = petals(rect.center)
-        return path
+        return petals(rect.center)
     }
     
-    init(radius: CGFloat = 100.0, petalDepth: CGFloat = 50.0, petalCount: Int = 6, degrees: CGFloat = 0.0) {
+    public init(radius: CGFloat = 100.0, petalDepth: CGFloat = 50.0, petalCount: Int = 6, degrees: CGFloat = 0.0) {
         self.radius = radius
         self.petalDepth = petalDepth
         self.petalCount = petalCount
