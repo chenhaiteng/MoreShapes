@@ -69,17 +69,3 @@ extension WaveCircle: InsettableShape {
     }
 }
 
-#Preview {
-    VStack {
-        WaveCircle()
-        ZStack {
-            WaveCircle(6.0)
-            WaveCircle(6.0).inset(by: 30.0).stroke(AngularGradient({
-                Color.red
-                Color.yellow
-                Color.blue
-                Color.red
-            }), lineWidth: 5.0)
-        }
-    }
-}

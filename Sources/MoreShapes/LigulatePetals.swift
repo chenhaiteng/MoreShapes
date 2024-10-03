@@ -58,17 +58,3 @@ extension LigulatePetals: InsettableShape {
         LigulatePetals(petalCount: petalCount, petalRatio: petalRatio, diskRatio: diskRatio, insets: insets.inset(by: amount))
     }
 }
-
-#Preview {
-    VStack {
-        LigulatePetals()
-        ZStack {
-            LigulatePetals().stroke(Color.gray, lineWidth: 5.0)
-            LigulatePetals().inset(by:50.0).stroke(AngularGradient {
-                Color.red
-                Color.blue
-                Color.yellow
-            }, lineWidth: 8.0).rotationEffect(Angle(degrees: 22.5))
-        }
-    }
-}

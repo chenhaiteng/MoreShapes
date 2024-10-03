@@ -5,18 +5,22 @@ import PackageDescription
 
 let package = Package(
     name: "MoreShapes",
-    platforms: [.macOS(.v14), .iOS(.v14), .tvOS(.v13), .watchOS(.v6)],
+    platforms: [.macOS(.v14), .iOS(.v15), .tvOS(.v13), .watchOS(.v6)],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "MoreShapes",
             targets: ["MoreShapes"]),
+        .library(
+            name: "MoreShapesSamples",
+            targets: ["MoreShapesSamples"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(url: "https://github.com/chenhaiteng/CoreGraphicsExtension.git", from: "0.4.0"),
         .package(url: "https://github.com/chenhaiteng/GradientBuilder.git", from: "1.0.0"),
+        .package(url: "https://github.com/chenhaiteng/SwiftClamping", from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.1.0")
     ],
     targets: [
@@ -25,6 +29,9 @@ let package = Package(
         .target(
             name: "MoreShapes",
             dependencies: ["CoreGraphicsExtension", "GradientBuilder"]),
+        .target(
+            name: "MoreShapesSamples",
+            dependencies: ["MoreShapes", "CoreGraphicsExtension", "GradientBuilder"]),
         .testTarget(
             name: "MoreShapesTests",
             dependencies: ["MoreShapes", "CoreGraphicsExtension", "GradientBuilder"]),

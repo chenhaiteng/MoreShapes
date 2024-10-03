@@ -87,13 +87,3 @@ extension KilaWheel : InsettableShape {
         KilaWheel(kilaHeight: kilaHeight, kilaWidth: kilaWidth, kilaCount: kilaCount, kilaOffset: kilaOffset, insets: insets.inset(by: amount))
     }
 }
-
-#Preview {
-    VStack {
-        KilaWheel()
-        KilaWheel(insets:.init(top: 0.0, leading: 20.0, bottom: 0.0, trailing: 40.0)).fill(RadialGradient(center: .center, startRadius: 0.0, endRadius: 300.0) {
-            Color.white
-            Color.blue
-        }, strokeBorder: .gray, lineWidth: 5.0)
-    }
-}

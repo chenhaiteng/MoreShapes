@@ -59,7 +59,3 @@ public struct Lotus: Shape {
     }
 }
 
-#Preview {
-    Lotus().fill(Color.red)
-}
-
