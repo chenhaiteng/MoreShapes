@@ -13,6 +13,9 @@ public struct Lotus: Shape {
     var petalDepth: CGFloat
     var petalCount: Int
     let lotusDegrees: CGFloat
+    let ratioX: CGFloat
+    let ratioY: CGFloat
+    let curvature: CGFloat
     
     private func petal(_ center: CGPoint) -> Path {
         Path { p in
@@ -20,10 +23,8 @@ public struct Lotus: Shape {
             let startPt = CGPolarPoint(radius: innerRadius, angle: .degrees(-90.0 - 360.0/Double(petalCount*2))).cgpoint
             let endPt = CGPolarPoint(radius: innerRadius, angle: .degrees(-90.0 + 360.0/Double(petalCount*2))).cgpoint
             let top = CGPolarPoint(radius: radius, angle: .degrees(-90.0)).cgpoint
-            let ratioX = 0.9
-            let ratioY = 0.8
             let controlPt1 = CGPoint(x: startPt.x - (top.x - startPt.x)*ratioX, y: startPt.y - (startPt.y - top.y)*ratioY)
-            let controlPt2 = CGPoint(x: top.x, y: top.y + (startPt.y - top.y)*0.3)
+            let controlPt2 = CGPoint(x: top.x, y: top.y + (startPt.y - top.y)*curvature)
             let controlPt3 = CGPoint(x: endPt.x + (endPt.x - top.x)*ratioX, y: endPt.y - (endPt.y - top.y)*ratioY)
             p.addCurve(to: top, control1: controlPt1, control2: controlPt2)
             p.addCurve(to: endPt, control1: controlPt2, control2: controlPt3)
@@ -51,15 +52,18 @@ public struct Lotus: Shape {
         return petals(rect.center)
     }
     
-    public init(radius: CGFloat = 100.0, petalDepth: CGFloat = 50.0, petalCount: Int = 6, degrees: CGFloat = 0.0) {
+    public init(radius: CGFloat = 100.0, petalDepth: CGFloat = 50.0, petalCount: Int = 6, degrees: CGFloat = 0.0, petalRatio: UnitPoint = .init(x: 0.9, y: 0.8), curvature: CGFloat = 0.3) {
         self.radius = radius
         self.petalDepth = petalDepth
         self.petalCount = petalCount
         self.lotusDegrees = degrees
+        
+        ratioX = petalRatio.x
+        ratioY = petalRatio.y
+        self.curvature = curvature
     }
 }
 
 #Preview {
-    Lotus().fill(Color.red)
+    Lotus(radius: 200.0, petalDepth: 80.0, petalCount: 18).stroke()
 }
-
